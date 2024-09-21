@@ -54,3 +54,40 @@ On paper, it seems simple enough:
 
 ---
 
+# Chapter 2: Start with Community
+“This process takes time, but done right and, most of all, done authentically, it will be the basis of how you move forward now and for years to come. Whether you’re just getting started or you’re already in the process of building a product, knowing and contributing to your community is key at every stage.”
+
+“Communities are a place where we can connect, learn, and have fun.”
+
+> “For minimalist entrepreneurs, communities are the starting point of any successful enterprise.”
+
+“Build deep relationships first.”
+
+## What is Community?
+“The best communities are made up of individuals who might be otherwise dissimilar but who have shared interests, values, and abilities.”
+
+“It’s a group of people who would likely never hang out with each other in any other situational context, and it often encompasses virtually every identity, including, yes, politics.”
+
+- “You don’t have to bring your whole self to every community you join, but you do have to bring a slice of yourself.”
+
+### Passion Economy
+“Passion economy”—“a world in which people are able to do what they love for a living and to have a more fulfilling and purposeful life.”
+
+Building a minimalist business around the people you love to spend time with and the ways you love to spend your time depends on being part of a community.
+
+“Finding your people is really important at the beginning. Not just for the sake of your business but also for the sake of your own well-being.”
+
+## Ask Yourself These Questions Daily to Find the Community:
+- “If I talk, who listens?”
+- “Where and with whom do I already spend my time, online and offline?”
+- “In what situations am I most authentically myself?”
+- “Who do I hang out with, even though I don’t really like them, but it’s worth it since we share something more important in common?”
+
+## How to Start the Community:
+- **Be a Part of It First**
+    - “Being a member of a community is a start, but the real magic happens when you start to contribute.”
+
+- **Contributing to the Community**
+    - “Contributing means commenting, editing, and generally being part of the broader conversation. What’s more, if you go further and create by showing what you’re working on, teaching what you’re learning, and bringing new material to your community, that influence will grow ninetyfold.”
+
+    - “While it’s better to lurk rather than needlessly comment, it’s even better to add value into the community even if you don’t feel that you’re ready. If you struggle with this, as many do, remind yourself that if you have something to add, it’s selfish to keep it to yourself!”
