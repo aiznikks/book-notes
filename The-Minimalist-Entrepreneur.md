@@ -91,3 +91,7 @@ Building a minimalist business around the people you love to spend time with and
     - “Contributing means commenting, editing, and generally being part of the broader conversation. What’s more, if you go further and create by showing what you’re working on, teaching what you’re learning, and bringing new material to your community, that influence will grow ninetyfold.”
 
     - “While it’s better to lurk rather than needlessly comment, it’s even better to add value into the community even if you don’t feel that you’re ready. If you struggle with this, as many do, remind yourself that if you have something to add, it’s selfish to keep it to yourself!”
+
+# Contribute, Create, and Teach
+Being a member of a community is a start, but the real magic happens when you start to contribute. Authors and bloggers Ben McConnell and Jackie Huba call this the “1% Rule”: On the internet, they say, 1 percent create, 9 percent contribute, and 90 percent consume. They’ve shown this rule to be true when applied to sites like Wikipedia and Yahoo, and it’s also widely applicable to other collaborative websites. For example, most people do not post, comment, or even upvote on Reddit. Instead they browse anonymously, which is known as “lurking.” To cite one example, even when the r/Askreddit subreddit was getting 1.5 million unique visitors a day, it was only getting 2,674 submissions and 110,408 comments in the same period.If you contribute, you will have ten times the presence of someone who doesn’t. And it will continue to grow from there.”
+
