@@ -1,28 +1,34 @@
 #!/bin/bash
 
-# Specify the output file in the current directory
-output_file="./tvn_file_sizes.txt"
+# Define the target directory to store copied log files
+target_dir="./copied_logs"
 
-# Initialize or clear the output file
-> "$output_file"
-
-# Print the header for the table
-echo -e "Filename\tSize (bytes)" >> "$output_file"
-echo -e "--------\t--------------" >> "$output_file"
+# Create the target directory if it doesn't exist
+mkdir -p "$target_dir"
 
 # Loop through each folder in the current directory
 for dir in */; do
     # Ensure it's a directory
     if [ -d "$dir" ]; then
-        # Find any .tvn file in the current directory (excluding .triv24.tvn)
-        find "$dir" -maxdepth 1 -type f -name "*.tvn" ! -name ".triv24.tvn" | while read -r tvn_file; do
-            # Get the size of the file
-            file_size=$(stat -c%s "$tvn_file")
+        # Define the path to the log.txt file
+        log_file="${dir}log.txt"
+
+        # Check if the log.txt file exists in the directory
+        if [ -f "$log_file" ]; then
+            # Extract the folder name without trailing slash
+            folder_name=$(basename "$dir")
             
-            # Append the filename and size to the output file in tabular format
-            printf "%-20s\t%d\n" "$(basename "$tvn_file")" "$file_size" >> "$output_file"
-        done
+            # Construct the new file name with folder name as prefix
+            new_log_file="${target_dir}/${folder_name}_log.txt"
+            
+            # Copy the log.txt file to the target directory and rename it
+            cp "$log_file" "$new_log_file"
+            
+            echo "Copied $log_file to $new_log_file"
+        else
+            echo "No log.txt found in $dir"
+        fi
     fi
 done
 
-echo "Task completed. The names and sizes of .tvn files have been written to $output_file."
+echo "All log.txt files have been copied and renamed."
