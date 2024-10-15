@@ -1,21 +1,24 @@
 #!/bin/bash
 
-# Loop through each directory in the current folder (basic2)
+# Specify the output file in the current directory
+output_file="./tvn_file_sizes.txt"
+
+# Initialize or clear the output file
+> "$output_file"
+
+# Loop through each folder in the current directory
 for dir in */; do
     # Ensure it's a directory
     if [ -d "$dir" ]; then
-        echo "Processing directory: $dir"
-        
-        # Check if config.cfg exists in the folder
-        if [ -f "$dir/config.cfg" ]; then
-            # Remove the leading '#' from lines in config.cfg
-            sed -i 's/^#//' "$dir/config.cfg"
+        # Find any .tvn file in the current directory (excluding .triv24.tvn)
+        find "$dir" -maxdepth 1 -type f -name "*.tvn" ! -name ".triv24.tvn" | while read -r tvn_file; do
+            # Get the size of the file
+            file_size=$(stat -c%s "$tvn_file")
             
-            echo "Uncommented config.cfg in $dir"
-        else
-            echo "No config.cfg found in $dir"
-        fi
+            # Append the filename and size to the output file
+            echo "File: $(basename "$tvn_file"), Size: $file_size bytes" >> "$output_file"
+        done
     fi
 done
 
-echo "Task completed."
+echo "Task completed. The names and sizes of .tvn files have been written to $output_file."
