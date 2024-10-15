@@ -6,6 +6,10 @@ output_file="./tvn_file_sizes.txt"
 # Initialize or clear the output file
 > "$output_file"
 
+# Print the header for the table
+echo -e "Filename\tSize (bytes)" >> "$output_file"
+echo -e "--------\t--------------" >> "$output_file"
+
 # Loop through each folder in the current directory
 for dir in */; do
     # Ensure it's a directory
@@ -15,8 +19,8 @@ for dir in */; do
             # Get the size of the file
             file_size=$(stat -c%s "$tvn_file")
             
-            # Append the filename and size to the output file
-            echo "File: $(basename "$tvn_file"), Size: $file_size bytes" >> "$output_file"
+            # Append the filename and size to the output file in tabular format
+            printf "%-20s\t%d\n" "$(basename "$tvn_file")" "$file_size" >> "$output_file"
         done
     fi
 done
