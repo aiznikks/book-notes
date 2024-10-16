@@ -13,13 +13,13 @@ cd "$1" || exit
 for file in *; do
   # Check if it's a file (and not a directory)
   if [ -f "$file" ]; then
-    # Remove the file extension to create the folder name
-    folder_name="${file%%.*}"
+    # Create a folder name that includes both the base name and the extension
+    folder_name="${file%.*}_$(echo ${file##*.})_file"
     
-    # Create the folder (if it doesn't exist)
+    # Create the folder
     mkdir -p "$folder_name"
     
-    # Move the file into the corresponding folder
+    # Move the file into the newly created folder
     mv "$file" "$folder_name"
     
     echo "Moved $file to $folder_name/"
