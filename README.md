@@ -1,28 +1,35 @@
 #!/bin/bash
 
-# Loop through all subdirectories
-for dir in */; do
-  # Check if the directory exists
-  if [ -d "$dir" ]; then
-    echo "Entering directory: $dir"
+# Root directory (you can modify this to specify a different directory)
+root_dir="."
 
-    # Check if config.cfg exists in the subdirectory
-    if [ -f "$dir/config.cfg" ]; then
-      echo "Found config.cfg in $dir, running onecc profile -C config.cfg"
+# Function to process each directory
+process_directory() {
+    local dir=$1
 
-      # Save the log file in the respective subdirectory
-      log_file="${dir%/}/onecc_profile.log"
-      
-      # Run the onecc command and redirect both stdout and stderr to the log file
-      if (cd "$dir" && onecc profile -C config.cfg > "$log_file" 2>&1); then
-        echo "Successfully ran onecc in $dir, log saved to $log_file"
-      else
-        echo "Error running onecc in $dir, check $log_file for details"
-      fi
-    else
-      echo "config.cfg not found in $dir, skipping..."
+    # Check if there is any .onnx file in the directory
+    if ls "$dir"/*.onnx &> /dev/null; then
+        echo "Found .onnx file in $dir"
+        
+        # Check if config.cfg is present in the same directory
+        if [ -f "$dir/config.cfg" ]; then
+            echo "Found config.cfg in $dir"
+            
+            # Replace occurrences in config.cfg
+            sed -i 's/one-import-tflite/one-import-onnx/g' "$dir/config.cfg"
+            sed -i 's/\.tflite/\.onnx/g' "$dir/config.cfg"
+            
+            echo "Updated config.cfg in $dir"
+        else
+            echo "config.cfg not found in $dir"
+        fi
     fi
-  else
-    echo "$dir is not a directory, skipping..."
-  fi
-done
+}
+
+# Export the function to make it available for subshells (if needed)
+export -f process_directory
+
+# Recursively search for subdirectories and process them
+find "$root_dir" -type d -exec bash -c 'process_directory "$0"' {} \;
+
+echo "Script execution completed."
