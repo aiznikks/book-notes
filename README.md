@@ -1,23 +1,30 @@
 #!/bin/bash
 
-# Loop through all subdirectories at depth level 1 in the current directory
-for dir in */; do
-    # Check if there's a .tflite file in the current subdirectory
-    tflite_file=$(find "$dir" -maxdepth 1 -type f -name "*.tflite" | head -n 1)
+# Find all config.cfg files in subdirectories of the current directory
+find . -type f -name "config.cfg" | while read -r config_file; do
+    echo "Processing $config_file..."
     
-    # Check if config.cfg exists in the same folder
-    config_file="$dir/config.cfg"
-    
-    if [[ -f "$tflite_file" && -f "$config_file" ]]; then
-        # Extract the prefix of the .tflite file (filename without extension)
-        prefix=$(basename "$tflite_file" .tflite)
-        
-        echo "Processing folder: $dir"
-        echo "Replacing 'STDnet_v3' with '$prefix' in $config_file"
+    # Use awk to correctly identify the [one-quantize] section
+    awk '
+    BEGIN { in_section=0; added=0; }
 
-        # Use sed to replace all occurrences of STDnet_v3 with the prefix
-        sed -i "s/STDnet_v3/$prefix/g" "$config_file"
-    else
-        echo "Skipping folder: $dir (either .tflite or config.cfg missing)"
-    fi
+    # If we encounter [one-quantize], enable the section flag
+    /^\[one-quantize\]/ { in_section=1; }
+
+    # If we encounter another section, disable the section flag
+    /^\[.*\]/ && in_section { in_section=0; }
+
+    # Add quantized_dtype=uint8 only after the output_path inside [one-quantize]
+    in_section && /output_path/ && !added { 
+        print $0;
+        print "quantized_dtype=uint8";
+        added=1;
+        next;
+    }
+
+    # Print all lines
+    { print $0; }
+    ' "$config_file" > temp.cfg && mv temp.cfg "$config_file"
+    
+    echo "Updated $config_file"
 done
