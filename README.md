@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Define the main output directory
+main_output_dir="output"
+
+# Create the main output directory if it doesn't exist
+mkdir -p "$main_output_dir"
+
 # Loop through all folders in the current directory
 for dir in */; do
     # Check if it's indeed a directory
@@ -17,9 +23,9 @@ for dir in */; do
             prefix="${prefix%.*}"
 
             # Set the name of the new folder based on the prefix of the model file
-            new_folder="../${prefix}"
+            new_folder="$main_output_dir/${prefix}"
 
-            # Create the new folder
+            # Create the new folder inside the main output directory
             mkdir -p "$new_folder"
 
             # Set the output .txt file name and path in the new folder
