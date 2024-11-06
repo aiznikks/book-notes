@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Create a folder named 'txt_files' in the current directory (if not already present)
+mkdir -p ./txt_files
+
 # Loop through all folders in the current directory
 for dir in */; do
     # Check if it's a directory
@@ -16,8 +19,8 @@ for dir in */; do
             prefix="${model_file##*/}"
             prefix="${prefix%.*}"
 
-            # Set the output .txt file name based on the model file prefix
-            txt_file="../${prefix}.txt"
+            # Set the output .txt file name and path in the 'txt_files' folder
+            txt_file="../txt_files/${prefix}.txt"
 
             # Create and write to the .txt file
             {
