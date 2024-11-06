@@ -1,16 +1,13 @@
 #!/bin/bash
 
-# Create a folder named 'txt_files' in the current directory (if not already present)
-mkdir -p ./txt_files
-
 # Loop through all folders in the current directory
 for dir in */; do
-    # Check if it's a directory
+    # Check if it's indeed a directory
     if [ -d "$dir" ]; then
-        # Change to the directory
+        # Change to the current directory (subfolder)
         cd "$dir" || continue
 
-        # Find any .onnx or .tflite file
+        # Find the first .onnx or .tflite file
         model_file=$(find . -maxdepth 1 -type f \( -name "*.onnx" -o -name "*.tflite" \) | head -n 1)
 
         # If a model file exists
@@ -19,24 +16,33 @@ for dir in */; do
             prefix="${model_file##*/}"
             prefix="${prefix%.*}"
 
-            # Set the output .txt file name and path in the 'txt_files' folder
-            txt_file="../txt_files/${prefix}.txt"
+            # Set the name of the new folder based on the prefix of the model file
+            new_folder="../${prefix}"
+
+            # Create the new folder
+            mkdir -p "$new_folder"
+
+            # Set the output .txt file name and path in the new folder
+            txt_file="$new_folder/${prefix}.txt"
 
             # Create and write to the .txt file
             {
                 echo "[network]"
-                # Find and list any .tvn files in this directory
+                # Find and copy .tvn files to the new folder and list them in the .txt file with the required path
                 for tvn_file in *.tvn; do
                     if [ -f "$tvn_file" ]; then
-                        echo "$tvn_file"
+                        cp "$tvn_file" "$new_folder/"
+                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$tvn_file"
                     fi
                 done
                 echo "[input]"
-                echo "input.0.tv2b"
+                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/input.0.tv2b"
+                cp input.0.tv2b "$new_folder/" 2>/dev/null
                 echo "[golden]"
-                echo "output.0.tv2b"
+                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/output.0.tv2b"
+                cp output.0.tv2b "$new_folder/" 2>/dev/null
                 echo "[output]"
-                echo "output0.dat"
+                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/output0.dat"
             } > "$txt_file"
         fi
 
