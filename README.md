@@ -1,68 +1,33 @@
 #!/bin/bash
 
-# Loop through all folders in the current directory
+# Loop through all directories in the current directory
 for dir in */; do
-    # Check if it's indeed a directory
-    if [ -d "$dir" ]; then
-        # Change to the current directory (subfolder)
-        cd "$dir" || continue
+    # Check if the directory contains any .tvn files
+    tvn_file=$(find "$dir" -maxdepth 1 -name "*.tvn" | head -n 1)
 
-        # Find the first .onnx or .tflite file
-        model_file=$(find . -maxdepth 1 -type f \( -name "*.onnx" -o -name "*.tflite" \) | head -n 1)
+    if [[ -n "$tvn_file" ]]; then
+        echo "Found .tvn file: $tvn_file"
 
-        # If a model file exists
-        if [ -n "$model_file" ]; then
-            # Get the prefix of the model file (filename without extension and path)
-            prefix="${model_file##*/}"
-            prefix="${prefix%.*}"
+        # Check if the directory contains any .cfg files
+        cfg_file=$(find "$dir" -maxdepth 1 -name "*.cfg" | head -n 1)
+        
+        if [[ -n "$cfg_file" ]]; then
+            echo "Found .cfg file: $cfg_file"
 
-            # Set the name of the new folder based on the prefix of the model file
-            new_folder="../${prefix}"
+            # Define the part to be added with the .tvn file name
+            new_content="
+[one-infer]
+driver=triv24-ssinfer
+command=--loadable $(basename "$tvn_file") --input-spec any --dump-input-buffer-as-tv2b-with-prefix input --dump-output-as-tv2b output
+"
 
-            # Create the new folder
-            mkdir -p "$new_folder"
-
-            # Set the output .txt file name and path in the new folder
-            txt_file="$new_folder/${prefix}.txt"
-
-            # Create and write to the .txt file
-            {
-                echo "[network]"
-                # Find and copy .tvn files to the new folder and list them in the .txt file with the required path
-                for tvn_file in *.tvn; do
-                    if [ -f "$tvn_file" ]; then
-                        cp "$tvn_file" "$new_folder/"
-                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$tvn_file"
-                    fi
-                done
-
-                # Handle input files
-                echo "[input]"
-                for input_file in input.*.tv2b; do
-                    if [ -f "$input_file" ]; then
-                        cp "$input_file" "$new_folder/"
-                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$input_file"
-                    fi
-                done
-
-                # Handle golden files
-                echo "[golden]"
-                for output_file in output.*.tv2b; do
-                    if [ -f "$output_file" ]; then
-                        cp "$output_file" "$new_folder/"
-                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$output_file"
-                    fi
-                done
-
-                # Handle output data
-                echo "[output]"
-                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/output0.dat"
-            } > "$txt_file"
+            # Append the new content to the .cfg file
+            echo "$new_content" >> "$cfg_file"
+            echo "Updated $cfg_file with the new content."
+        else
+            echo "No .cfg file found in $dir."
         fi
-
-        # Return to the parent directory
-        cd ..
+    else
+        echo "No .tvn file found in $dir."
     fi
 done
-
-echo "Script completed."
