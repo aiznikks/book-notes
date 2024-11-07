@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Define the main output directory
-main_output_dir="output"
-
-# Create the main output directory if it doesn't exist
-mkdir -p "$main_output_dir"
-
 # Loop through all folders in the current directory
 for dir in */; do
     # Check if it's indeed a directory
@@ -23,9 +17,9 @@ for dir in */; do
             prefix="${prefix%.*}"
 
             # Set the name of the new folder based on the prefix of the model file
-            new_folder="$main_output_dir/${prefix}"
+            new_folder="../${prefix}"
 
-            # Create the new folder inside the main output directory
+            # Create the new folder
             mkdir -p "$new_folder"
 
             # Set the output .txt file name and path in the new folder
@@ -41,12 +35,26 @@ for dir in */; do
                         echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$tvn_file"
                     fi
                 done
+
+                # Handle input files
                 echo "[input]"
-                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/input.0.tv2b"
-                cp input.0.tv2b "$new_folder/" 2>/dev/null
+                for input_file in input.*.tv2b; do
+                    if [ -f "$input_file" ]; then
+                        cp "$input_file" "$new_folder/"
+                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$input_file"
+                    fi
+                done
+
+                # Handle golden files
                 echo "[golden]"
-                echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/output.0.tv2b"
-                cp output.0.tv2b "$new_folder/" 2>/dev/null
+                for output_file in output.*.tv2b; do
+                    if [ -f "$output_file" ]; then
+                        cp "$output_file" "$new_folder/"
+                        echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/$output_file"
+                    fi
+                done
+
+                # Handle output data
                 echo "[output]"
                 echo "/opt/media/USBDriveA1/roseL-inference/${prefix}/output0.dat"
             } > "$txt_file"
